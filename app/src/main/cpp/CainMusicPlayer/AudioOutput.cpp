@@ -28,7 +28,7 @@ AudioOutput::AudioOutput() {
 }
 
 AudioOutput::~AudioOutput() {
-    freeAudio();
+
 }
 
 /**

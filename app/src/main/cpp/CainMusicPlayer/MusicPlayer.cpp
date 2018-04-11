@@ -458,7 +458,7 @@ void MusicPlayer::stream_component_close(AudioState *is, int stream_index) {
         case AVMEDIA_TYPE_AUDIO:
             decoder_abort(&is->audioDecoder, &is->audioFrameQueue);
             if (mAudioOutput) {
-                mAudioOutput->closeAudio();
+                mAudioOutput->freeAudio();
             }
             decoder_destroy(&is->audioDecoder);
             swr_free(&is->swr_ctx);
@@ -526,7 +526,7 @@ void MusicPlayer::do_exit(AudioState *is) {
     }
     avformat_network_deinit();
     // TODO 退出时这里不能用exit，但去掉的话，需要完全释放，如果不完全释放可能会产生驱动崩溃的情况。
-    exit(0);
+    // exit(0);
 }
 
 /**
