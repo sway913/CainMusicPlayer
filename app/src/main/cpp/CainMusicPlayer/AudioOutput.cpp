@@ -107,7 +107,7 @@ int AudioOutput::openAudio(const AudioSpec *desired, AudioSpec *obtained) {
 
     format_pcm->formatType       = SL_DATAFORMAT_PCM;
     format_pcm->numChannels      = desired->channels;
-    format_pcm->samplesPerSec    = desired->freq * 1000; // milli Hz
+    format_pcm->samplesPerSec    = desired->sampleRate * 1000; // milli Hz
     // format_pcm->numChannels      = 2;
     // format_pcm->samplesPerSec    = SL_SAMPLINGRATE_44_1;
 
@@ -191,12 +191,14 @@ int AudioOutput::openAudio(const AudioSpec *desired, AudioSpec *obtained) {
     audioOpaque->milli_per_buffer  = OPENSLES_BUFLEN;
     audioOpaque->frames_per_buffer = audioOpaque->milli_per_buffer * format_pcm->samplesPerSec / 1000000; // samplesPerSec audioState in milli
     audioOpaque->bytes_per_buffer  = audioOpaque->bytes_per_frame * audioOpaque->frames_per_buffer;
-    audioOpaque->buffer_capacity   = OPENSLES_BUFFERS * audioOpaque->bytes_per_buffer;
+    audioOpaque->buffer_capacity   = OPENSLES_BUFFERS * audioOpaque->bytes_per_buffer; // 最大缓冲区 * 每个缓冲的字节数，计算出缓冲区大小
+
     ALOGI("OpenSL-ES: bytes_per_frame  = %d bytes\n",  (int)audioOpaque->bytes_per_frame);
     ALOGI("OpenSL-ES: milli_per_buffer = %d ms\n",     (int)audioOpaque->milli_per_buffer);
     ALOGI("OpenSL-ES: frame_per_buffer = %d frames\n", (int)audioOpaque->frames_per_buffer);
     ALOGI("OpenSL-ES: bytes_per_buffer = %d bytes\n",  (int)audioOpaque->bytes_per_buffer);
     ALOGI("OpenSL-ES: buffer_capacity  = %d bytes\n",  (int)audioOpaque->buffer_capacity);
+
     audioOpaque->buffer = (uint8_t *)malloc(audioOpaque->buffer_capacity);
     if (!audioOpaque->buffer) {
         ALOGE("%s: failed to alloc buffer %d\n", __func__, (int)audioOpaque->buffer_capacity);
@@ -225,13 +227,11 @@ int AudioOutput::openAudio(const AudioSpec *desired, AudioSpec *obtained) {
     }
 
     if (obtained) {
-        *obtained      = *desired;
+        *obtained = *desired;
         obtained->size = audioOpaque->buffer_capacity;
-        obtained->freq = format_pcm->samplesPerSec / 1000;
+        obtained->sampleRate = format_pcm->samplesPerSec / 1000;
     }
-
     return audioOpaque->buffer_capacity;
-
 }
 
 void AudioOutput::pauseAudio(int pause_on) {

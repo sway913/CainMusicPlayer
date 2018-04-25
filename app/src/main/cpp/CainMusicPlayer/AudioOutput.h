@@ -2,8 +2,8 @@
 // Created by admin on 2018/4/9.
 //
 
-#ifndef CAINPLAYER_AUDIOOUTPUT_H
-#define CAINPLAYER_AUDIOOUTPUT_H
+#ifndef MUSICPLAYER_AUDIOOUTPUT_H
+#define MUSICPLAYER_AUDIOOUTPUT_H
 
 #include "ffplay_def.h"
 #include <SLES/OpenSLES.h>
@@ -93,4 +93,4 @@ private:
     AudioOpaque * audioOpaque;
 };
 
-#endif //CAINPLAYER_AUDIOOUTPUT_H
+#endif //MUSICPLAYER_AUDIOOUTPUT_H

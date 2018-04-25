@@ -2,8 +2,8 @@
 // Created by admin on 2018/3/29.
 //
 
-#ifndef CAINPLAYER_FRAMEQUEUE_H
-#define CAINPLAYER_FRAMEQUEUE_H
+#ifndef MUSICPLAYER_FRAMEQUEUE_H
+#define MUSICPLAYER_FRAMEQUEUE_H
 
 #include "ffplay_def.h"
 
@@ -29,4 +29,4 @@ int64_t frame_queue_last_pos(FrameQueue *f);
 };
 #endif
 
-#endif //CAINPLAYER_FRAMEQUEUE_H
+#endif //MUSICPLAYER_FRAMEQUEUE_H

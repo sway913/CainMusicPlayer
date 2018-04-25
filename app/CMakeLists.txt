@@ -64,7 +64,6 @@ add_library( cainmusicplayer
 
              SHARED
              # common
-             src/main/cpp/common/Looper.cpp
              src/main/cpp/common/Mutex.cpp
              src/main/cpp/common/Thread.cpp
 

@@ -2,8 +2,8 @@
 // Created by admin on 2018/3/29.
 //
 
-#ifndef CAINPLAYER_PACKETQUEUE_H
-#define CAINPLAYER_PACKETQUEUE_H
+#ifndef MUSICPLAYER_PACKETQUEUE_H
+#define MUSICPLAYER_PACKETQUEUE_H
 
 #include "ffplay_def.h"
 
@@ -36,4 +36,4 @@ int packet_queue_get(PacketQueue *q, AVPacket *pkt, int block, int *serial);
 
 
 
-#endif //CAINPLAYER_PACKETQUEUE_H
+#endif //MUSICPLAYER_PACKETQUEUE_H

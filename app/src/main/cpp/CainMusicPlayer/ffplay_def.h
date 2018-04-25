@@ -2,8 +2,8 @@
 // Created by admin on 2018/3/28.
 //
 
-#ifndef CAINPLAYER_FFPLAYE_DEF_H
-#define CAINPLAYER_FFPLAYE_DEF_H
+#ifndef MUSICPLAYER_FFPLAYE_DEF_H
+#define MUSICPLAYER_FFPLAYE_DEF_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -90,15 +90,13 @@ typedef void (*AudioCallback) (void *userdata, uint8_t * stream, int len);
 #endif
 
 typedef struct AudioSpec {
-    int freq;                   /**< DSP frequency -- samples per second */
-    AudioFormat format;         /**< Audio data format */
-    uint8_t channels;           /**< Number of channels: 1 mono, 2 stereo */
-    uint8_t silence;            /**< Audio buffer silence value (calculated) */
+    int sampleRate;             // 采样率
+    AudioFormat format;         // 音频格式
+    uint8_t channels;           // 声道
     uint16_t samples;           /**< Audio buffer size in samples (power of 2) */
-    uint16_t padding;           /**< NOT USED. Necessary for some compile environments */
     uint32_t size;              /**< Audio buffer size in bytes (calculated) */
-    AudioCallback callback;
-    void *userdata;
+    AudioCallback callback;     // 音频回调
+    void *userdata;             // 音频数据
 } AudioSpec;
 
 
@@ -119,16 +117,16 @@ typedef struct PacketQueue {
    Cond *cond;
 } PacketQueue;
 
-#define SAMPLE_QUEUE_SIZE 20
-#define FRAME_QUEUE_SIZE SAMPLE_QUEUE_SIZE
+#define SAMPLE_QUEUE_SIZE 2
+#define FRAME_QUEUE_SIZE 2
 
 typedef struct AudioParams {
-    int freq;
-    int channels;
-    int64_t channel_layout;
-    enum AVSampleFormat fmt;
-    int frame_size;
-    int bytes_per_sec;
+    int sampleRate;             // 采样率
+    int channels;               // 声道
+    int64_t channel_layout;     // 声道设计
+    enum AVSampleFormat fmt;    // 采样格式
+    int frame_size;             // 帧大小
+    int bytes_per_sec;          // 每秒字节数
 } AudioParams;
 
 typedef struct Clock {
@@ -167,11 +165,6 @@ typedef struct FrameQueue {
     PacketQueue *pktq;
 } FrameQueue;
 
-enum {
-    AV_SYNC_AUDIO_MASTER, /* default choice */
-    AV_SYNC_EXTERNAL_CLOCK, /* synchronize to an external clock */
-};
-
 typedef struct Decoder {
     AVPacket pkt;
     AVPacket pkt_temp;
@@ -196,8 +189,7 @@ typedef struct AudioState {
     int seek_flags;             // 定位标志
     int64_t seek_pos;           // 定位位置(秒)
     int64_t seek_rel;           //
-    AVFormatContext *ic;        // 解复用上下文
-    int realtime;               // 是否实时流
+    AVFormatContext *pFormatContext;        // 解复用上下文
 
     Clock audioClock;           // 音频时钟
     Clock extClock;             // 外部时钟
@@ -205,21 +197,12 @@ typedef struct AudioState {
     FrameQueue audioFrameQueue; // 音频帧队列
     Decoder audioDecoder;       // 音频解码器
 
-    int av_sync_type;           // 同步类型，默认是同步到音频
-
     int audioStreamIdx;         // 音频流索引
     AVStream *audioStream;      // 音频流
     PacketQueue audioQueue;     // 音频裸数据包队列
 
-    int audio_volume;           // 音量大小
-    int muted;                  // 是否静音
-
     double audio_clock;
     int audio_clock_serial;
-    double audio_diff_cum; /* used for AV difference average computation */
-    double audio_diff_avg_coef;
-    double audio_diff_threshold;
-    int audio_diff_avg_count;
     int audio_hw_buf_size;
     uint8_t *audio_buf;
     uint8_t *audio_buf1;
@@ -229,15 +212,14 @@ typedef struct AudioState {
     unsigned int audio_new_buf_size;
     int audio_buf_index; /* in bytes */
     int audio_write_buf_size;           // 写入大小
-    struct AudioParams audio_src;
-    struct AudioParams audio_tgt;
+    struct AudioParams audio_src;       // 原音频参数
+    struct AudioParams audio_tgt;       // 目标参数
     struct SwrContext *swr_ctx;         // 音频转码上下文
 
-    int eof; // 结尾标志
-    char *filename; // 文件名
-    Thread *readThread;       // 读文件线程
-    Cond *readCondition;    // 读文件条件锁
-
+    int eof;                // 结尾标志
+    char *filename;         // 文件名
+    Thread *demuxThread;    // 解复用线程
+    Cond *demuxCondition;   // 解复用条件锁
 } AudioState;
 
 inline static void *mallocz(size_t size) {
@@ -268,4 +250,4 @@ SDL_GetError(void) {
 };
 #endif
 
-#endif //CAINPLAYER_FFPLAYE_DEF_H
+#endif //MUSICPLAYER_FFPLAYE_DEF_H

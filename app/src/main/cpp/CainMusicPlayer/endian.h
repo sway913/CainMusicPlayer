@@ -2,8 +2,8 @@
 // Created by admin on 2018/4/9.
 //
 
-#ifndef CAINPLAYER_ENDIAN_H
-#define CAINPLAYER_ENDIAN_H
+#ifndef MUSICPLAYER_ENDIAN_H
+#define MUSICPLAYER_ENDIAN_H
 #define SDL_LIL_ENDIAN  1234
 #define SDL_BIG_ENDIAN  4321
 
@@ -24,4 +24,4 @@
 #endif /* __linux __ */
 #endif /* !SDL_BYTEORDER */
 
-#endif //CAINPLAYER_ENDIAN_H
+#endif //MUSICPLAYER_ENDIAN_H

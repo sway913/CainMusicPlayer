@@ -2,8 +2,8 @@
 // Created by admin on 2018/3/29.
 //
 
-#ifndef CAINPLAYER_MEDIADECODER_H
-#define CAINPLAYER_MEDIADECODER_H
+#ifndef MUSICPLAYER_MEDIADECODER_H
+#define MUSICPLAYER_MEDIADECODER_H
 
 #include "ffplay_def.h"
 
@@ -25,4 +25,4 @@ void decoder_abort(Decoder *d, FrameQueue *fq);
 };
 #endif
 
-#endif //CAINPLAYER_MEDIADECODER_H
+#endif //MUSICPLAYER_MEDIADECODER_H

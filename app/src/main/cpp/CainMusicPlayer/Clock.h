@@ -2,8 +2,8 @@
 // Created by admin on 2018/3/29.
 //
 
-#ifndef CAINPLAYER_CLOCK_H
-#define CAINPLAYER_CLOCK_H
+#ifndef MUSICPLAYER_CLOCK_H
+#define MUSICPLAYER_CLOCK_H
 
 #include "ffplay_def.h"
 
@@ -29,4 +29,4 @@ void sync_clock_to_slave(Clock *c, Clock *slave);
 };
 #endif
 
-#endif //CAINPLAYER_CLOCK_H
+#endif //MUSICPLAYER_CLOCK_H
