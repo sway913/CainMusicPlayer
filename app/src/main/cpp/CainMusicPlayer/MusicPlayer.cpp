@@ -247,6 +247,7 @@ void MusicPlayer::setLooping(bool loop) {
  */
 void MusicPlayer::setPlaybackRate(float playbackRate) {
     this->playbackRate = playbackRate;
+    CondSignal(audioState->demuxCondition);
 }
 
 /**
@@ -727,6 +728,10 @@ int MusicPlayer::demux() {
                 if (audioState->audioStreamIdx >= 0) {
                     packet_queue_flush(&audioState->audioQueue);
                     packet_queue_put(&audioState->audioQueue, &flush_pkt);
+                    // 清除opensles的数据
+                    if (mAudioOutput) {
+                        mAudioOutput->flushAudio();
+                    }
                 }
                 if (audioState->seek_flags & AVSEEK_FLAG_BYTE) {
                     set_clock(&audioState->extClock, NAN, 0);
